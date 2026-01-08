@@ -8,12 +8,22 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import Image from "next/image";
 import { useState } from "react";
+import maltipooRaincoatTransparent from "../public/assets/images/maltipoo_raincoat_transparent_1024x1024.png";
+
+type WeatherForecast = {
+  location: { name: string; region: string };
+  current: {
+    temp_f: number;
+    condition: { text: string };
+  };
+};
 
 export default function Page() {
   const [zipcode, setZipcode] = useState("");
   const [loading, setLoading] = useState(false);
-  const [weather, setWeather] = useState<unknown>(null);
+  const [weather, setWeather] = useState<WeatherForecast | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   async function onSubmit() {
@@ -27,7 +37,7 @@ export default function Page() {
       if (!response.ok) {
         throw new Error(`Request failed: ${response.status}`);
       }
-      const json = await response.json();
+      const json = (await response.json()) as WeatherForecast;
       setWeather(json);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
@@ -43,11 +53,11 @@ export default function Page() {
         <CardHeader>
           <CardTitle>WeatherPup 🐶🐾</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex flex-col gap-2">
           <CardDescription>
             Get paw-fect weather recommendations for your area!
           </CardDescription>
-          <div className="">
+          <form className="flex flex-col gap-2">
             <Input
               value={zipcode}
               onChange={(e) => setZipcode(e.target.value)}
@@ -59,19 +69,26 @@ export default function Page() {
             >
               {loading ? "Fetching..." : "Fetch Weather"}
             </Button>
-          </div>
+          </form>
 
           {error && <p className="text-sm text-destructive">{error}</p>}
 
           {weather && (
-            <div className="text-sm">
-              <p className="font-medium">
-                {weather.location.name}, {weather.location.region}
-              </p>
-              <p>
-                {Math.round(weather.current.temp_f)}°F •{" "}
-                {weather.current.condition.text}
-              </p>
+            <div className="flex flex-col justify-center items-center">
+              <Image
+                src={maltipooRaincoatTransparent}
+                width={240}
+                height={240}
+                alt="Picture of dog in a raincoat"
+              />
+              <div className="text-sm">
+                <p className="font-medium">
+                  {weather.location.name}, {weather.location.region}
+                </p>
+                <p>
+                  {weather.current.temp_f}°F • {weather.current.condition.text}
+                </p>
+              </div>
             </div>
           )}
         </CardContent>

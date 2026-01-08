@@ -38,5 +38,13 @@ export async function GET(req: Request) {
 
   const data = await response.json();
 
-  return NextResponse.json(data);
+  return NextResponse.json({
+    location: { name: data.location.name, region: data.location.region },
+    current: {
+      temp_f: Math.round(data.current.temp_f),
+      condition: {
+        text: data.current.condition.text,
+      },
+    },
+  });
 }
