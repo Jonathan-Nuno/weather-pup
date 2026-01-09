@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useState } from "react";
 import maltipooRaincoatTransparent from "@/public/assets/images/maltipoo_raincoat_transparent_1024x1024.png";
 import { getErrorMessage } from "@/lib/getErrorMessage";
+import { getBrowserLocation } from "@/lib/geolocation";
 
 type WeatherForecast = {
   location: { name: string; region: string };
@@ -21,39 +22,72 @@ export default function WeatherCard() {
   const [weather, setWeather] = useState<WeatherForecast | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  async function onSubmit() {
+  async function fetchForecast(queryBy: string) {
+    const response = await fetch(
+      `/api/weather/forecast?queryBy=${encodeURIComponent(queryBy)}`
+    );
+    if (!response.ok) {
+      const text = await response.text().catch(() => "");
+      throw new Error(text || `Request failed: ${response.status}`);
+    }
+    const json = (await response.json()) as WeatherForecast;
+    setWeather(json);
+  }
+
+  async function onZipSubmit(e: React.FormEvent) {
+    e.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
-      const response = await fetch(
-        `/api/weather/forecast?queryBy=${encodeURIComponent(zipcode)}`
-      );
-      if (!response.ok) {
-        throw new Error(`Request failed: ${response.status}`);
-      }
-      const json = (await response.json()) as WeatherForecast;
-      setWeather(json);
+      await fetchForecast(zipcode.trim());
     } catch (e: unknown) {
       setError(getErrorMessage(e));
     } finally {
       setLoading(false);
     }
   }
+
+  async function onUseMyLocation() {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const { lat, lon } = await getBrowserLocation();
+      await fetchForecast(`${lat},${lon}`);
+    } catch (e: unknown) {
+      setError(getErrorMessage(e));
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <>
-      <form className="flex flex-col gap-2">
+      <form className="flex flex-col gap-2" onSubmit={onZipSubmit}>
         <Input
           value={zipcode}
           onChange={(e) => setZipcode(e.target.value)}
-          placeholder="Enter Zip ( e.g., 12345"
+          placeholder="Enter Zip ( e.g., 12345)"
+          type="text"
+          inputMode="numeric"
+          pattern="[0-9]*"
+          maxLength={5}
         />
-        <Button
-          onClick={onSubmit}
-          disabled={loading || zipcode.trim().length < 5}
-        >
-          {loading ? "Fetching..." : "Fetch Weather"}
-        </Button>
+        <div className="flex gap-2">
+          <Button type="submit" disabled={loading || zipcode.trim().length < 5}>
+            {loading ? "Fetching..." : "Fetch Weather"}
+          </Button>
+
+          <Button
+            type="button"
+            variant={"secondary"}
+            onClick={onUseMyLocation}
+            disabled={loading}
+          >
+            Use my location
+          </Button>
+        </div>
       </form>
 
       {error && <p className="text-sm text-destructive">{error}</p>}
