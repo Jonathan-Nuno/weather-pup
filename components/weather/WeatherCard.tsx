@@ -76,7 +76,7 @@ export default function WeatherCard() {
         />
         <div className="flex gap-2">
           <Button type="submit" disabled={loading || zipcode.trim().length < 5}>
-            {loading ? "Fetching..." : "Fetch Weather"}
+            {loading ? "Fetching..." : "Fetch Weather!"}
           </Button>
 
           <Button
