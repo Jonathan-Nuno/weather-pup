@@ -75,7 +75,7 @@ export default function WeatherCard() {
             src={maltipooTransparent}
             width={240}
             height={240}
-            alt="Picture of dog in a raincoat"
+            alt="Picture of an idle dog"
           />
           <div>
             <p className="w-[300px] h-5"></p>
@@ -90,7 +90,7 @@ export default function WeatherCard() {
             src={maltipooFetchingTransparent}
             width={240}
             height={240}
-            alt="Picture of dog in a raincoat"
+            alt="Picture of dog fetching ball"
           />
           <div>
             <p className="w-[300px] h-5">Fetching Weather!</p>
@@ -99,7 +99,7 @@ export default function WeatherCard() {
         </div>
       )}
 
-      {viewState === "loaded" && (
+      {viewState === "loaded" && weather &&(
         <div className="flex flex-col justify-center items-center">
           <Image
             src={maltipooRaincoatTransparent}
@@ -109,10 +109,10 @@ export default function WeatherCard() {
           />
           <div className="text-sm">
             <p className="font-medium">
-              {weather?.location.name}, {weather?.location.region}
+              {weather.location.name}, {weather.location.region}
             </p>
             <p>
-              {weather?.current.temp_f}°F • {weather?.current.condition.text}
+              {weather.current.temp_f}°F • {weather.current.condition.text}
             </p>
           </div>
         </div>
@@ -124,10 +124,10 @@ export default function WeatherCard() {
             src={maltipooErrorTransparent}
             width={240}
             height={240}
-            alt="Picture of dog in a raincoat"
+            alt="Picture of dog with knocked over trash can"
           />
           <div>
-            <p className="w-[300px] h-5"></p>
+            <p className="text-sm text-destructive w-[300px] h-5">{error}</p>
             <p className="w-[300px] h-5"></p>
           </div>
         </div>
@@ -161,9 +161,6 @@ export default function WeatherCard() {
           </Button>
         </div>
       </form>
-
-      {error && <p className="text-sm text-destructive">{error}</p>}
-      {!error && <p className="w-[300px] h-5"></p>}
     </>
   );
 }
