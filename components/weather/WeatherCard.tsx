@@ -10,20 +10,14 @@ import maltipooFetchingTransparent from "@/public/assets/images/maltipoo_fetchin
 import maltipooErrorTransparent from "@/public/assets/images/maltipoo_error_transparent_1024x1024.png";
 import { getErrorMessage } from "@/lib/getErrorMessage";
 import { getBrowserLocation } from "@/lib/geolocation";
-
-type WeatherForecast = {
-  location: { name: string; region: string };
-  current: {
-    temp_f: number;
-    condition: { text: string };
-  };
-};
+import WeatherCarousel from "./WeatherCarousel";
+import { WeatherApiResponse } from "@/app/types/weather";
 
 type ViewState = "idle" | "loading" | "loaded" | "error";
 
 export default function WeatherCard() {
   const [zipcode, setZipcode] = useState("");
-  const [weather, setWeather] = useState<WeatherForecast | null>(null);
+  const [weather, setWeather] = useState<WeatherApiResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [viewState, setViewState] = useState<ViewState>("idle");
 
@@ -35,7 +29,7 @@ export default function WeatherCard() {
       const text = await response.text().catch(() => "");
       throw new Error(text || `Request failed: ${response.status}`);
     }
-    const json = (await response.json()) as WeatherForecast;
+    const json = (await response.json()) as WeatherApiResponse;
     setWeather(json);
   }
 
@@ -99,7 +93,7 @@ export default function WeatherCard() {
         </div>
       )}
 
-      {viewState === "loaded" && weather &&(
+      {viewState === "loaded" && weather && (
         <div className="flex flex-col justify-center items-center">
           <Image
             src={maltipooRaincoatTransparent}
@@ -115,6 +109,7 @@ export default function WeatherCard() {
               {weather.current.temp_f}°F • {weather.current.condition.text}
             </p>
           </div>
+          <WeatherCarousel weatherData={weather} />
         </div>
       )}
 

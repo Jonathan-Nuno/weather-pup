@@ -1,14 +1,14 @@
+import { Hour, WeatherApiResponse } from "@/app/types/weather";
 import { env } from "@/lib/env";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
-
   const queryParam = searchParams.get("queryBy");
 
   if (!queryParam) {
     return NextResponse.json(
-      { erro: "Missing queryBy param" },
+      { error: "Missing queryBy param" },
       { status: 400 }
     );
   }
@@ -36,7 +36,21 @@ export async function GET(req: Request) {
     );
   }
 
-  const data = await response.json();
+  const data = (await response.json()) as WeatherApiResponse;
+
+  const hourToHourForecast: Record<string, Hour[]> = {};
+
+  for (const forecastDay of data.forecast.forecastday) {
+    hourToHourForecast[forecastDay.date] = forecastDay.hour.map((hour) => ({
+      time_epoch: hour.time_epoch,
+      time: hour.time,
+      temp_c: hour.temp_c,
+      temp_f: hour.temp_f,
+      condition: {
+        text: hour.condition.text,
+      },
+    }));
+  }
 
   return NextResponse.json({
     location: { name: data.location.name, region: data.location.region },
@@ -46,5 +60,6 @@ export async function GET(req: Request) {
         text: data.current.condition.text,
       },
     },
+    hourToHourForecast,
   });
 }
