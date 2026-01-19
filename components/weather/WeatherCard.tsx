@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useState } from "react";
-import maltipooRaincoatTransparent from "@/public/assets/images/maltipoo_raincoat_transparent_1024x1024.png";
 import maltipooTransparent from "@/public/assets/images/maltipoo_transparent_1024x1024.png";
 import maltipooFetchingTransparent from "@/public/assets/images/maltipoo_fetching_transparent_1024x1024.png";
 import maltipooErrorTransparent from "@/public/assets/images/maltipoo_error_transparent_1024x1024.png";
@@ -12,6 +11,7 @@ import { getErrorMessage } from "@/lib/getErrorMessage";
 import { getBrowserLocation } from "@/lib/geolocation";
 import WeatherCarousel from "./WeatherCarousel";
 import { WeatherApiResponse } from "@/app/types/weather";
+import { getDogImage } from "@/lib/getDogImage";
 
 type ViewState = "idle" | "loading" | "loaded" | "error";
 type WeatherCardProps = {
@@ -64,6 +64,10 @@ export default function WeatherCard({ tempMeasurement }: WeatherCardProps) {
     }
   }
 
+  const dogSource = weather
+    ? getDogImage(weather.current.condition.text, weather.current.temp_f)
+    : maltipooTransparent;
+
   return (
     <>
       {viewState === "idle" && (
@@ -107,7 +111,7 @@ export default function WeatherCard({ tempMeasurement }: WeatherCardProps) {
       {viewState === "loaded" && weather && (
         <div className="flex flex-col justify-center items-center gap-1 max-h-100">
           <Image
-            src={maltipooRaincoatTransparent}
+            src={dogSource}
             width={200}
             height={200}
             alt="Picture of dog in a raincoat"
@@ -127,7 +131,10 @@ export default function WeatherCard({ tempMeasurement }: WeatherCardProps) {
               </p>
             )}
           </div>
-          <WeatherCarousel weatherData={weather} tempMeasurement={tempMeasurement}/>
+          <WeatherCarousel
+            weatherData={weather}
+            tempMeasurement={tempMeasurement}
+          />
         </div>
       )}
 

@@ -66,8 +66,8 @@ export default function Page() {
           </CardAction>
         </CardHeader>
         <CardContent className="flex flex-col gap-2">
-          <CardDescription className="text-base text-medium">
-            Get paw-fect weather recommendations for your area!
+          <CardDescription className="text-base text-medium text-center">
+            Check for paw-fect weather in your area!
           </CardDescription>
           <WeatherCard tempMeasurement={tempMeasurement} />
         </CardContent>
