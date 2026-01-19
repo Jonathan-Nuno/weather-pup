@@ -13,7 +13,7 @@ import WeatherCard from "@/components/weather/WeatherCard";
 import { useTheme } from "next-themes";
 import { useState } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { MoonStar, Sun } from "@hugeicons/core-free-icons";
+import { Moon02Icon, Sun } from "@hugeicons/core-free-icons";
 
 export default function Page() {
   const { theme, setTheme } = useTheme();
@@ -44,13 +44,19 @@ export default function Page() {
                 onClick={() => setTheme("dark")}
                 aria-label="Switch to dark mode"
               >
-                <HugeiconsIcon icon={MoonStar} size={20} />
+                <HugeiconsIcon icon={Moon02Icon} size={20} />
               </Button>
             )}
             <div className="flex flex-row">
               <p className="text-sm leading-none">°F</p>
               <Switch
-                className="data-checked:bg-primary data-unchecked:bg-primary align-middle"
+                className="
+                data-checked:bg-primary 
+                data-unchecked:bg-primary 
+                dark:data-checked:bg-primary 
+                dark:data-unchecked:bg-primary 
+              dark:[&>span]:bg-white
+                align-middle"
                 onCheckedChange={(checked) =>
                   setTempMeasurement(checked ? "C" : "F")
                 }
