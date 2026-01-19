@@ -57,6 +57,7 @@ export async function GET(req: Request) {
     location: { name: data.location.name, region: data.location.region },
     current: {
       temp_f: Math.round(data.current.temp_f),
+      temp_c: Math.round(data.current.temp_c),
       condition: {
         text: data.current.condition.text,
       },

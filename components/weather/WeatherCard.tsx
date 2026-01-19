@@ -14,8 +14,11 @@ import WeatherCarousel from "./WeatherCarousel";
 import { WeatherApiResponse } from "@/app/types/weather";
 
 type ViewState = "idle" | "loading" | "loaded" | "error";
+type WeatherCardProps = {
+  tempMeasurement: "F" | "C";
+};
 
-export default function WeatherCard() {
+export default function WeatherCard({ tempMeasurement }: WeatherCardProps) {
   const [zipcode, setZipcode] = useState("");
   const [weather, setWeather] = useState<WeatherApiResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -64,11 +67,11 @@ export default function WeatherCard() {
   return (
     <>
       {viewState === "idle" && (
-        <div className="flex flex-col justify-center items-center gap-1 min-h-100">
+        <div className="flex flex-col justify-center items-center gap-1 max-h-100">
           <Image
             src={maltipooTransparent}
-            width={240}
-            height={240}
+            width={200}
+            height={200}
             alt="Picture of an idle dog"
             className="max-w-full"
           />
@@ -86,11 +89,11 @@ export default function WeatherCard() {
       )}
 
       {viewState === "loading" && (
-        <div className="flex flex-col justify-center items-center gap-1 min-h-100">
+        <div className="flex flex-col justify-center items-center gap-1 max-h-100">
           <Image
             src={maltipooFetchingTransparent}
-            width={240}
-            height={240}
+            width={200}
+            height={200}
             alt="Picture of dog fetching ball"
           />
           <div>
@@ -102,31 +105,38 @@ export default function WeatherCard() {
       )}
 
       {viewState === "loaded" && weather && (
-        <div className="flex flex-col justify-center items-center gap-1 min-h-100">
+        <div className="flex flex-col justify-center items-center gap-1 max-h-100">
           <Image
             src={maltipooRaincoatTransparent}
-            width={240}
-            height={240}
+            width={200}
+            height={200}
             alt="Picture of dog in a raincoat"
           />
           <div className="text-base">
             <p className="font-medium">
               {weather.location.name}, {weather.location.region}
             </p>
-            <p>
-              {weather.current.temp_f}°F • {weather.current.condition.text}
-            </p>
+            {tempMeasurement === "F" && (
+              <p>
+                {weather.current.temp_f}°F • {weather.current.condition.text}
+              </p>
+            )}
+            {tempMeasurement === "C" && (
+              <p>
+                {weather.current.temp_c}°C • {weather.current.condition.text}
+              </p>
+            )}
           </div>
-          <WeatherCarousel weatherData={weather} />
+          <WeatherCarousel weatherData={weather} tempMeasurement={tempMeasurement}/>
         </div>
       )}
 
       {viewState === "error" && (
-        <div className="flex flex-col justify-center items-center gap-1 min-h-100">
+        <div className="flex flex-col justify-center items-center gap-1 max-h-100">
           <Image
             src={maltipooErrorTransparent}
-            width={240}
-            height={240}
+            width={200}
+            height={200}
             alt="Picture of dog with knocked over trash can"
           />
           <div>
