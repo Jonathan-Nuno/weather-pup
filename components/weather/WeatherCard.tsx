@@ -76,6 +76,7 @@ export default function WeatherCard() {
             <p className="max-w-87.5 h-5"></p>
             <p className="max-w-87.5 h-5"></p>
           </div>
+          <div className="min-h-30"></div>
         </div>
       )}
 
@@ -91,6 +92,7 @@ export default function WeatherCard() {
             <p className="max-w-87.5 h-5">Fetching Weather!</p>
             <p className="max-w-87.5 h-5"></p>
           </div>
+          <div className="min-h-30"></div>
         </div>
       )}
 
@@ -126,6 +128,7 @@ export default function WeatherCard() {
             <p className="text-sm text-destructive max-w-87.5 h-5">{error}</p>
             <p className="max-w-87.5 h-5"></p>
           </div>
+          <div className="min-h-30"></div>
         </div>
       )}
 

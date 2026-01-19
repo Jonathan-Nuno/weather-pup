@@ -29,7 +29,7 @@ export default function WeatherCarousel({ weatherData }: WeatherCarousel) {
     .sort((a, b) => a.hour.time_epoch - b.hour.time_epoch);
 
   return (
-    <div className="w-full m-w-md">
+    <div className="w-full m-w-md max-h-30">
       <Carousel className="relative w-full max-w-md px-10">
         <CarouselContent>
           {slides.map(({ date, hour }) => (
