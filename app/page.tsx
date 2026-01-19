@@ -10,8 +10,8 @@ import WeatherCard from "@/components/weather/WeatherCard";
 
 export default function Page() {
   return (
-    <div className="min-h-screen flex justify-center items-center">
-      <Card className="w-[350px]">
+    <div className="min-h-dvh flex justify-center items-center">
+      <Card className="max-w-87.5 w-full">
         <CardHeader>
           <CardTitle>WeatherPup 🐶🐾</CardTitle>
         </CardHeader>

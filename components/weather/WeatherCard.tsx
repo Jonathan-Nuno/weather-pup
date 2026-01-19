@@ -64,22 +64,23 @@ export default function WeatherCard() {
   return (
     <>
       {viewState === "idle" && (
-        <div className="flex flex-col justify-center items-center">
+        <div className="flex flex-col justify-center items-center gap-1 min-h-100">
           <Image
             src={maltipooTransparent}
             width={240}
             height={240}
             alt="Picture of an idle dog"
+            className="max-w-full"
           />
           <div>
-            <p className="w-[300px] h-5"></p>
-            <p className="w-[300px] h-5"></p>
+            <p className="max-w-87.5 h-5"></p>
+            <p className="max-w-87.5 h-5"></p>
           </div>
         </div>
       )}
 
       {viewState === "loading" && (
-        <div className="flex flex-col justify-center items-center">
+        <div className="flex flex-col justify-center items-center gap-1 min-h-100">
           <Image
             src={maltipooFetchingTransparent}
             width={240}
@@ -87,14 +88,14 @@ export default function WeatherCard() {
             alt="Picture of dog fetching ball"
           />
           <div>
-            <p className="w-[300px] h-5">Fetching Weather!</p>
-            <p className="w-[300px] h-5"></p>
+            <p className="max-w-87.5 h-5">Fetching Weather!</p>
+            <p className="max-w-87.5 h-5"></p>
           </div>
         </div>
       )}
 
       {viewState === "loaded" && weather && (
-        <div className="flex flex-col justify-center items-center">
+        <div className="flex flex-col justify-center items-center gap-1 min-h-100">
           <Image
             src={maltipooRaincoatTransparent}
             width={240}
@@ -114,7 +115,7 @@ export default function WeatherCard() {
       )}
 
       {viewState === "error" && (
-        <div className="flex flex-col justify-center items-center">
+        <div className="flex flex-col justify-center items-center gap-1 min-h-100">
           <Image
             src={maltipooErrorTransparent}
             width={240}
@@ -122,8 +123,8 @@ export default function WeatherCard() {
             alt="Picture of dog with knocked over trash can"
           />
           <div>
-            <p className="text-sm text-destructive w-[300px] h-5">{error}</p>
-            <p className="w-[300px] h-5"></p>
+            <p className="text-sm text-destructive max-w-87.5 h-5">{error}</p>
+            <p className="max-w-87.5 h-5"></p>
           </div>
         </div>
       )}

@@ -18,7 +18,7 @@ export async function GET(req: Request) {
 
   const url = `${baseUrl}/forecast.json?key=${key}&q=${encodeURIComponent(
     queryParam
-  )}&days=3&aqi=no&alerts=no`;
+  )}&days=1&aqi=no&alerts=no`;
 
   const response = await fetch(url, { cache: "no-store" });
 
