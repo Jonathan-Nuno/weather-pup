@@ -38,7 +38,7 @@ export default function WeatherCarousel({ weatherData }: WeatherCarousel) {
               className="basis-1/3 md:basis-1/3 lg:basis-1/3"
             >
               <div className="rounded-lg border p-3 justify-items-center items-center">
-                <p className="text-xs text-muted-foreground">{hour.time}</p>
+                <p className="text-sm text-muted-foreground">{hour.time}</p>
                 <Image
                   src={hour.condition.icon}
                   width={64}

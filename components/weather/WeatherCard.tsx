@@ -76,7 +76,12 @@ export default function WeatherCard() {
             <p className="max-w-87.5 h-5"></p>
             <p className="max-w-87.5 h-5"></p>
           </div>
-          <div className="min-h-30"></div>
+          <div className="min-h-30">
+            <p className="text-base">
+              Enter your ZIP code or use your location to see the weather and
+              update your pup’s fit!
+            </p>
+          </div>
         </div>
       )}
 
@@ -89,7 +94,7 @@ export default function WeatherCard() {
             alt="Picture of dog fetching ball"
           />
           <div>
-            <p className="max-w-87.5 h-5">Fetching Weather!</p>
+            <p className="max-w-87.5 h-5 text-base">Fetching Weather!</p>
             <p className="max-w-87.5 h-5"></p>
           </div>
           <div className="min-h-30"></div>
@@ -104,7 +109,7 @@ export default function WeatherCard() {
             height={240}
             alt="Picture of dog in a raincoat"
           />
-          <div className="text-sm">
+          <div className="text-base">
             <p className="font-medium">
               {weather.location.name}, {weather.location.region}
             </p>

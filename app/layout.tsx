@@ -1,18 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Public_Sans } from "next/font/google";
+import { Afacad } from "next/font/google";
 import "./globals.css";
 
-const publicSans = Public_Sans({subsets:['latin'],variable:'--font-sans'});
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const afacadSans = Afacad({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: "WeatherPup",
@@ -25,9 +15,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={publicSans.variable}>
+    <html lang="en" className={afacadSans.variable}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${afacadSans.variable} ${afacadSans.variable} antialiased`}
       >
         {children}
       </body>
