@@ -7,6 +7,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import Image from "next/image";
 
 type WeatherCarousel = {
   weatherData: WeatherApiResponse;
@@ -28,27 +29,32 @@ export default function WeatherCarousel({ weatherData }: WeatherCarousel) {
     .sort((a, b) => a.hour.time_epoch - b.hour.time_epoch);
 
   return (
-    <>
-      <Carousel className="w-full max-w-md">
+    <div className="w-full m-w-md">
+      <Carousel className="relative w-full max-w-md px-10">
         <CarouselContent>
           {slides.map(({ date, hour }) => (
             <CarouselItem
               key={`${date}-${hour.time_epoch}`}
-              className="md:basis-1/2 lg:basis-1/2"
+              className="basis-1/3 md:basis-1/3 lg:basis-1/3"
             >
-              <div className="rounded-lg border p-3 text-center">
+              <div className="rounded-lg border p-3 justify-items-center items-center">
                 <p className="text-xs text-muted-foreground">{hour.time}</p>
+                <Image
+                  src={hour.condition.icon}
+                  width={64}
+                  height={64}
+                  alt={`Weather icon for ${hour.condition.text}`}
+                />
                 <p className="text-lg font-semibold">
                   {Math.round(hour.temp_f)}°F
                 </p>
-                <p className="text-xs">{hour.condition.text}</p>
               </div>
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious className="left-0.5" />
+        <CarouselNext className="right-0.5" />
       </Carousel>
-    </>
+    </div>
   );
 }

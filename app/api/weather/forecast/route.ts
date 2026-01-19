@@ -43,11 +43,12 @@ export async function GET(req: Request) {
   for (const forecastDay of data.forecast.forecastday) {
     hourToHourForecast[forecastDay.date] = forecastDay.hour.map((hour) => ({
       time_epoch: hour.time_epoch,
-      time: hour.time,
+      time: hour.time.slice(-5),
       temp_c: hour.temp_c,
       temp_f: hour.temp_f,
       condition: {
         text: hour.condition.text,
+        icon: `https:${hour.condition.icon}`,
       },
     }));
   }

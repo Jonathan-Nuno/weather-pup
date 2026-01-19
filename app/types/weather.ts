@@ -1,5 +1,6 @@
 interface Condition {
   text: string;
+  icon: string;
 }
 export interface Hour {
   time_epoch: number;
