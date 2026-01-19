@@ -8,6 +8,10 @@ const afacadSans = Afacad({ subsets: ["latin"], variable: "--font-sans" });
 export const metadata: Metadata = {
   title: "WeatherPup",
   description: "Weather app for dog lovers",
+  icons: {
+    apple: "/apple-touch-icon.png",
+    icon: "/icon.png",
+  },
 };
 
 export default function RootLayout({
