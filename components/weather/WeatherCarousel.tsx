@@ -47,7 +47,7 @@ export default function WeatherCarousel({
     return idx === -1 ? Math.max(0, slides.length - 1) : idx;
   }, [nowSec, slides]);
 
-  if (!byHour || Object.keys(byHour).length === 0) {
+  if (Object.keys(byHour).length === 0) {
     return (
       <p className="text-sm text-muted-foreground">
         No hourly forecast available.
@@ -56,7 +56,7 @@ export default function WeatherCarousel({
   }
 
   return (
-    <div className="w-full m-w-md max-h-30">
+    <div className="w-full max-w-md">
       <Carousel
         className="relative w-full max-w-md px-10"
         opts={{ startIndex, align: "center" }}

@@ -8,4 +8,3 @@ export function getErrorMessage(error: unknown): string {
 
   return "Something went wrong";
 }
-// TODO: Work on displaying user friendly error messages

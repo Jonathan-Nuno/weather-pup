@@ -6,7 +6,11 @@ import beachDog from "@/public/assets/images/maltipoo_beach_transparent_1024x102
 export function getDogImage(text: string, temp_f: number) {
   const normalized = text.toLowerCase();
 
-  if (normalized.includes("rain")) {
+  if (
+    normalized.includes("rain") ||
+    normalized.includes("drizzle") ||
+    normalized.includes("thunder")
+  ) {
     return rainCoatDog;
   }
 
@@ -19,4 +23,19 @@ export function getDogImage(text: string, temp_f: number) {
   }
 
   return shirtDog;
+}
+
+export function getDogOutfitDescription(text: string, temp_f: number): string {
+  const normalized = text.toLowerCase();
+
+  if (
+    normalized.includes("rain") ||
+    normalized.includes("drizzle") ||
+    normalized.includes("thunder")
+  ) {
+    return "White Maltipoo wearing a raincoat";
+  }
+  if (temp_f <= 68) return "White Maltipoo in a warm winter coat";
+  if (temp_f > 80) return "White Maltipoo ready for the beach";
+  return "White Maltipoo wearing a shirt";
 }

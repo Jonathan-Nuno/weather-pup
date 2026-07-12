@@ -20,9 +20,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={afacadSans.variable}>
+    <html lang="en" className={afacadSans.variable} suppressHydrationWarning>
       <body
-        className={`${afacadSans.variable} ${afacadSans.variable} antialiased`}
+        className={`${afacadSans.variable} antialiased`}
       >
         <ThemeProvider
           attribute={"class"}

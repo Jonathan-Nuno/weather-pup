@@ -15,7 +15,28 @@ Depending on what Mother Nature is up to, your pup will swap outfits — raincoa
 
 ---
 
+## Getting started
+
+1. Copy `.env.example` to `.env` and add a [WeatherAPI](https://www.weatherapi.com/) key.
+2. Install dependencies with `npm install`.
+3. Start the app with `npm run dev`.
+
+The weather key stays server-side: the browser calls WeatherPup's API route, which validates ZIP-code and browser-coordinate searches before requesting WeatherAPI.
+
+## Quality checks
+
+Run these before opening a pull request:
+
+```bash
+npm run lint
+npm test
+npm run build
+```
+
+`npm test` runs the Vitest suite covering search validation, API response shaping, temperature rounding, and pup-outfit rules. Use `npm run test:watch` while developing.
+
 ## 🦴 Under the Hood
+
 WeatherPup is built with:
 - **Next.js (App Router)**
 - **TypeScript**
@@ -24,12 +45,14 @@ WeatherPup is built with:
 
 ---
 
-## 🚧 Paw-ject Status
-This project is still **under paw-struction** 🛠️  
-We’re actively:
-- Polishing UI interactions
-- Teaching the pup new outfit tricks
-- Fetching cleaner forecasts and squashing the occasional bug
+## Outfit rules
+
+- Rain, drizzle, and thunderstorms → raincoat
+- 68°F and below → winter coat
+- Above 80°F → beach outfit
+- Everything else → shirt
+
+All pup images have transparent backgrounds so the white Maltipoo sits naturally in the interface.
 
 ---
 

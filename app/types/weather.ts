@@ -18,6 +18,11 @@ export interface ForecastDay {
 export interface WeatherApiResponse {
   location: { name: string; region: string };
   current: { temp_f: number; temp_c: number; condition: Condition };
+  hourToHourForecast: Record<string, Hour[]>;
+}
+
+export interface WeatherApiUpstreamResponse {
+  location: { name: string; region: string };
+  current: { temp_f: number; temp_c: number; condition: Condition };
   forecast: { forecastday: ForecastDay[] };
-  hourToHourForecast?: Record<string, Hour[]>;
 }

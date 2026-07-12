@@ -1,14 +1,16 @@
-import { Hour, WeatherApiResponse } from "@/app/types/weather";
+import { WeatherApiUpstreamResponse } from "@/app/types/weather";
 import { env } from "@/lib/env";
+import { isWeatherQueryValid, toWeatherResponse } from "@/lib/weather";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const queryParam = searchParams.get("queryBy");
 
-  if (!queryParam) {
+  const query = queryParam?.trim();
+  if (!query || !isWeatherQueryValid(query)) {
     return NextResponse.json(
-      { error: "Missing queryBy param" },
+      { error: "Enter a valid five-digit ZIP code or use your location." },
       { status: 400 }
     );
   }
@@ -17,51 +19,35 @@ export async function GET(req: Request) {
   const key = env.WEATHER_API_KEY;
 
   const url = `${baseUrl}/forecast.json?key=${key}&q=${encodeURIComponent(
-    queryParam
+    query
   )}&days=1&aqi=no&alerts=no`;
 
-  const response = await fetch(url, { cache: "no-store" });
+  let response: Response;
+  try {
+    response = await fetch(url, { cache: "no-store" });
+  } catch {
+    return NextResponse.json(
+      { error: "Weather service is unavailable. Please try again shortly." },
+      { status: 503 }
+    );
+  }
 
   if (!response.ok) {
-    const text = await response.text().catch(() => "");
+    const apiError = (await response.json().catch(() => null)) as {
+      error?: { message?: string };
+    } | null;
     return NextResponse.json(
       {
-        error: "WeatherAPI Error: ",
-        status: response.status,
-        details: text,
+        error:
+          apiError?.error?.message ??
+          "Weather service could not find that location. Please try another ZIP code.",
       },
       {
-        status: response.status,
+        status: response.status >= 500 ? 503 : response.status,
       }
     );
   }
 
-  const data = (await response.json()) as WeatherApiResponse;
-
-  const hourToHourForecast: Record<string, Hour[]> = {};
-
-  for (const forecastDay of data.forecast.forecastday) {
-    hourToHourForecast[forecastDay.date] = forecastDay.hour.map((hour) => ({
-      time_epoch: hour.time_epoch,
-      time: hour.time.slice(-5),
-      temp_c: hour.temp_c,
-      temp_f: hour.temp_f,
-      condition: {
-        text: hour.condition.text,
-        icon: `https:${hour.condition.icon}`,
-      },
-    }));
-  }
-
-  return NextResponse.json({
-    location: { name: data.location.name, region: data.location.region },
-    current: {
-      temp_f: Math.round(data.current.temp_f),
-      temp_c: Math.round(data.current.temp_c),
-      condition: {
-        text: data.current.condition.text,
-      },
-    },
-    hourToHourForecast,
-  });
+  const data = (await response.json()) as WeatherApiUpstreamResponse;
+  return NextResponse.json(toWeatherResponse(data));
 }
